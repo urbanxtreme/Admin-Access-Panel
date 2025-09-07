@@ -18,6 +18,188 @@
         color: #333;
       }
 
+      .success-modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(34, 197, 94, 0.8);
+        animation: flashGreen 0.5s ease-in-out;
+      }
+
+      .success-content {
+        background: linear-gradient(135deg, #059669, #047857);
+        margin: 10% auto;
+        padding: 40px;
+        border: 3px solid #fff;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 600px;
+        color: white;
+        text-align: center;
+        box-shadow: 0 0 50px rgba(34, 197, 94, 0.8);
+        animation: bounce 0.6s ease-in-out;
+      }
+
+      .success-content h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .success-content p {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        line-height: 1.6;
+      }
+
+      .success-content .highlight-email {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 15px;
+        border-radius: 10px;
+        margin: 20px 0;
+        font-size: 1.3rem;
+        font-weight: bold;
+        border: 2px dashed rgba(255, 255, 255, 0.5);
+      }
+
+      .success-btn {
+        background: white;
+        color: #059669;
+        border: none;
+        padding: 15px 30px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        margin: 0 10px;
+        transition: all 0.3s ease;
+      }
+
+      .success-btn:hover {
+        background: #f0fdf4;
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      @keyframes flashGreen {
+        0%,
+        50%,
+        100% {
+          background-color: rgba(34, 197, 94, 0.8);
+        }
+        25%,
+        75% {
+          background-color: rgba(59, 130, 246, 0.9);
+        }
+      }
+
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-20px);
+        }
+        60% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .warning-modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(220, 53, 69, 0.8);
+        animation: flashRed 0.5s ease-in-out;
+      }
+
+      .warning-content {
+        background: linear-gradient(135deg, #dc2626, #b91c1c);
+        margin: 10% auto;
+        padding: 40px;
+        border: 3px solid #fff;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 600px;
+        color: white;
+        text-align: center;
+        box-shadow: 0 0 50px rgba(220, 53, 69, 0.8);
+        animation: shake 0.5s ease-in-out;
+      }
+
+      .warning-content h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .warning-content p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        line-height: 1.6;
+      }
+
+      .warning-btn {
+        background: white;
+        color: #dc2626;
+        border: none;
+        padding: 15px 30px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        margin: 0 10px;
+      }
+
+      .warning-btn:hover {
+        background: #f8f9fa;
+        transform: scale(1.05);
+      }
+
+      @keyframes flashRed {
+        0%,
+        50%,
+        100% {
+          background-color: rgba(220, 53, 69, 0.8);
+        }
+        25%,
+        75% {
+          background-color: rgba(239, 68, 68, 0.9);
+        }
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        10%,
+        30%,
+        50%,
+        70%,
+        90% {
+          transform: translateX(-10px);
+        }
+        20%,
+        40%,
+        60%,
+        80% {
+          transform: translateX(10px);
+        }
+      }
+
       .container {
         max-width: 1200px;
         margin: 0 auto;
@@ -640,6 +822,78 @@
       </div>
     </div>
 
+    <!-- Warning Modal -->
+    <div id="warningModal" class="warning-modal">
+      <div class="warning-content">
+        <h2>⚠️ CRITICAL WARNING ⚠️</h2>
+        <p><strong>INVALID MEMBERSHIP ID DETECTED!</strong></p>
+        <p>
+          The membership ID you entered is not in our verified database. This
+          could indicate:
+        </p>
+        <ul style="text-align: left; margin: 20px 0; font-size: 1.1rem">
+          <li>• Fraudulent membership attempt</li>
+          <li>• Expired or invalid membership</li>
+          <li>• Data entry error</li>
+        </ul>
+        <p style="font-size: 1.3rem; font-weight: bold">
+          DO NOT PROCEED WITHOUT VERIFICATION!
+        </p>
+        <div style="margin-top: 30px">
+          <button class="warning-btn" onclick="closeWarningModal()">
+            I UNDERSTAND - GO BACK
+          </button>
+          <button
+            class="warning-btn"
+            onclick="proceedAnyway()"
+            style="background: #dc2626; color: white"
+          >
+            PROCEED ANYWAY (RISKY)
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Success Modal -->
+    <div id="successModal" class="success-modal">
+      <div class="success-content">
+        <h2>🎉 AWESOME! 🎉</h2>
+        <p><strong>EMAIL FOUND IN DATABASE!</strong></p>
+        <div class="highlight-email" id="foundEmailDisplay"></div>
+        <p style="font-size: 1.1rem">
+          This participant is pre-registered! You can skip payment verification
+          and send the ticket directly.
+        </p>
+        <ul
+          style="
+            text-align: left;
+            margin: 20px 0;
+            font-size: 1rem;
+            list-style: none;
+          "
+        >
+          <li>✅ No payment verification needed</li>
+          <li>✅ Ready for ticket generation</li>
+          <li>✅ Automatically verified status</li>
+          <li>✅ Fast-track registration</li>
+        </ul>
+        <p style="font-size: 1.2rem; font-weight: bold; margin-top: 25px">
+          Registration will be marked as VERIFIED automatically!
+        </p>
+        <div style="margin-top: 30px">
+          <button
+            class="success-btn"
+            onclick="closeSuccessModal()"
+            style="background: #059669; color: white"
+          >
+            AWESOME! CONTINUE
+          </button>
+          <button class="success-btn" onclick="closeSuccessModal()">
+            GOT IT!
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script>
       let registrations = JSON.parse(
         localStorage.getItem("eventRegistrations") || "[]"
@@ -648,6 +902,133 @@
       let emailMethod = localStorage.getItem("emailMethod") || "";
       let currentEmailContent = "";
       let currentRegistration = null;
+      let pendingRegistration = null;
+
+      const preregisteredEmails = [
+        "abhithabhilash00@gmail.com",
+        "amalsaji441.6@gmail.com",
+        "ameenanas2005@gmail.com",
+        "ananthukrishnanayilamanand@gmail.com",
+        "anijapavi@gmail.com",
+        "archasrchinnu@gmail.com",
+        "aseem7604@gmail.com",
+        "asmiyahassain123@gmail.com",
+        "aswaladarsh1@gmail.com",
+        "aswathys200722@gmail.com",
+        "awinashr701@gmail.com",
+        "bbinodhsangeetha@gmail.com",
+        "chithrah84@gmail.com",
+        "durganair290@gmail.com",
+        "elbaannababu@gmail.com",
+        "fathimaluluh2004@gmail.com",
+        "gayathri0719gayu@gmail.com",
+        "gouthamjk4@gmail.com",
+        "jenisammu24@gmail.com",
+        "karthikashine06@gmail.com",
+        "karthikeyanashari5@gmail.com",
+        "manhajasmine@gmail.com",
+        "mayoora146@gmail.com",
+        "nadiyashamnade@gmail.com",
+        "niranjanasa360@gmail.com",
+        "prahladalamcode@gmail.com",
+        "priyavishnus.7736@gmail.com",
+        "reemarinu.fr@gmail.com",
+        "saadgahusna96@gmail.com",
+        "shahanapookkath6@gmail.com",
+        "sreejassreejith@gmail.com",
+        "sreelekshmipinky4@gmail.com",
+        "sreeparvati9745@gmail.com",
+        "sukainafasil@gmail.com",
+        "vaisali1298@gmail.com",
+        "vijayysanil718@gmail.com",
+        "zainshanavas45@gmail.com",
+      ];
+
+      const validMembershipIds = [
+        "000563",
+        "000564",
+        "000565",
+        "000566",
+        "000567",
+        "000568",
+        "000569",
+        "000570",
+        "000571",
+        "000572",
+        "000573",
+        "000574",
+        "000575",
+        "000576",
+        "000577",
+        "000578",
+        "000579",
+        "000580",
+        "000581",
+        "000582",
+        "000583",
+        "000584",
+        "000585",
+        "000586",
+        "000587",
+        "000588",
+        "000589",
+        "000590",
+        "000591",
+        "000592",
+        "000593",
+        "000594",
+        "000595",
+        "000596",
+        "000597",
+        "000598",
+        "000599",
+        "000600",
+        "000601",
+        "000602",
+        "000603",
+        "000604",
+        "000605",
+        "000606",
+        "000607",
+        "000608",
+        "000609",
+        "000610",
+        "000611",
+        "000612",
+        "000613",
+        "000614",
+        "000615",
+        "000616",
+        "000617",
+        "000618",
+        "000619",
+        "000620",
+        "000621",
+        "000622",
+        "000623",
+        "000624",
+        "000625",
+        "000626",
+        "000627",
+        "000628",
+        "000629",
+        "000630",
+        "000631",
+        "000632",
+        "000633",
+        "000634",
+        "000635",
+        "000636",
+        "000637",
+        "000638",
+        "000639",
+        "000640",
+        "000641",
+        "000642",
+        "000643",
+        "000644",
+        "000645",
+      ];
 
       // Initialize
       document.addEventListener("DOMContentLoaded", function () {
@@ -691,30 +1072,30 @@
 
         const workflows = {
           mailto: `
-            <strong>Step 1:</strong> Add registration from Formspree email<br>
-            <strong>Step 2:</strong> Verify payment if needed<br>
-            <strong>Step 3:</strong> Click "Send Ticket" - downloads ticket image automatically<br>
-            <strong>Step 4:</strong> Email client opens with pre-filled content<br>
-            <strong>Step 5:</strong> Attach the downloaded ticket image and send<br><br>
-            <em>💡 Your default email client will open with everything ready!</em>
-        `,
+      <strong>Step 1:</strong> Add registration from Formspree email<br>
+      <strong>Step 2:</strong> Verify payment if needed<br>
+      <strong>Step 3:</strong> Click "Send Ticket" - downloads ticket image automatically<br>
+      <strong>Step 4:</strong> Email client opens with pre-filled content<br>
+      <strong>Step 5:</strong> Attach the downloaded ticket image and send<br><br>
+      <em>💡 Your default email client will open with everything ready!</em>
+  `,
           copy: `
-            <strong>Step 1:</strong> Add registration from Formspree email<br>
-            <strong>Step 2:</strong> Verify payment if needed<br>
-            <strong>Step 3:</strong> Click "Send Ticket" - shows ticket image and email content<br>
-            <strong>Step 4:</strong> Right-click and save the ticket image<br>
-            <strong>Step 5:</strong> Copy email content and paste in Gmail/Outlook<br>
-            <strong>Step 6:</strong> Attach ticket image and send<br><br>
-            <em>💡 Works with any email service you prefer!</em>
-        `,
+      <strong>Step 1:</strong> Add registration from Formspree email<br>
+      <strong>Step 2:</strong> Verify payment if needed<br>
+      <strong>Step 3:</strong> Click "Send Ticket" - shows ticket image and email content<br>
+      <strong>Step 4:</strong> Right-click and save the ticket image<br>
+      <strong>Step 5:</strong> Copy email content and paste in Gmail/Outlook<br>
+      <strong>Step 6:</strong> Attach ticket image and send<br><br>
+      <em>💡 Works with any email service you prefer!</em>
+  `,
           webmail: `
-            <strong>Step 1:</strong> Add registration from Formspree email<br>
-            <strong>Step 2:</strong> Verify payment if needed<br>
-            <strong>Step 3:</strong> Click "Send Ticket" - downloads ticket and opens Gmail<br>
-            <strong>Step 4:</strong> Login if needed, attach downloaded ticket<br>
-            <strong>Step 5:</strong> Send the pre-filled email<br><br>
-            <em>💡 Opens directly in your web browser!</em>
-        `,
+      <strong>Step 1:</strong> Add registration from Formspree email<br>
+      <strong>Step 2:</strong> Verify payment if needed<br>
+      <strong>Step 3:</strong> Click "Send Ticket" - downloads ticket and opens Gmail<br>
+      <strong>Step 4:</strong> Login if needed, attach downloaded ticket<br>
+      <strong>Step 5:</strong> Send the pre-filled email<br><br>
+      <em>💡 Opens directly in your web browser!</em>
+  `,
         };
 
         stepsElement.innerHTML =
@@ -745,8 +1126,78 @@
         .addEventListener("submit", function (e) {
           e.preventDefault();
 
-          const registration = {
-            id: nextId++,
+          const emailInput = document
+            .getElementById("email")
+            .value.toLowerCase()
+            .trim();
+          const membershipInput = document
+            .getElementById("membershipId")
+            .value.trim();
+          const isMember =
+            document.getElementById("isteMembership").value === "yes";
+
+          // Check if email is in preregistered list
+          const isPreregistered = preregisteredEmails.includes(emailInput);
+
+          // Check membership ID if user claims to be a member
+          if (isMember && membershipInput && membershipInput !== "N/A") {
+            const isFirstYear = membershipInput
+              .toLowerCase()
+              .includes("first year");
+            const isValidId = validMembershipIds.includes(membershipInput);
+
+            if (!isFirstYear && !isValidId) {
+              // Store the registration data and show warning
+              pendingRegistration = {
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                phone: document.getElementById("phone").value,
+                isteMembership: document.getElementById("isteMembership").value,
+                membershipId: membershipInput,
+                paymentLink:
+                  document.getElementById("paymentLink").value || "N/A",
+                isPreregistered: isPreregistered,
+              };
+              document.getElementById("warningModal").style.display = "block";
+              return;
+            }
+          }
+
+          // Proceed with normal registration
+          createRegistration(isPreregistered);
+        });
+
+      function createRegistration(isPreregistered) {
+        const registration = {
+          id: nextId++,
+          name: document.getElementById("name").value,
+          email: document.getElementById("email").value,
+          phone: document.getElementById("phone").value,
+          isteMembership: document.getElementById("isteMembership").value,
+          membershipId: document.getElementById("membershipId").value || "N/A",
+          paymentLink: document.getElementById("paymentLink").value || "N/A",
+          status:
+            isPreregistered ||
+            document.getElementById("isteMembership").value === "yes"
+              ? "verified"
+              : "pending",
+          ticketSent: false,
+          addedDate: new Date().toISOString(),
+        };
+
+        registrations.push(registration);
+        saveData();
+
+        // Clear form
+        document.getElementById("addRegistrationForm").reset();
+        toggleMembershipFields();
+
+        displayRegistrations();
+        updateStats();
+
+        if (isPreregistered) {
+          // Store the registration data and show success modal
+          pendingRegistration = {
             name: document.getElementById("name").value,
             email: document.getElementById("email").value,
             phone: document.getElementById("phone").value,
@@ -754,25 +1205,65 @@
             membershipId:
               document.getElementById("membershipId").value || "N/A",
             paymentLink: document.getElementById("paymentLink").value || "N/A",
-            status:
-              document.getElementById("isteMembership").value === "yes"
-                ? "verified"
-                : "pending",
-            ticketSent: false,
-            addedDate: new Date().toISOString(),
+            isPreregistered: true,
           };
+          showSuccessModal(emailInput);
+          return;
+        }
+      }
 
-          registrations.push(registration);
-          saveData();
+      function closeWarningModal() {
+        document.getElementById("warningModal").style.display = "none";
+        pendingRegistration = null;
+      }
 
-          // Clear form
-          this.reset();
-          toggleMembershipFields();
+      function proceedAnyway() {
+        if (pendingRegistration) {
+          // Temporarily fill form with pending data
+          document.getElementById("name").value = pendingRegistration.name;
+          document.getElementById("email").value = pendingRegistration.email;
+          document.getElementById("phone").value = pendingRegistration.phone;
+          document.getElementById("isteMembership").value =
+            pendingRegistration.isteMembership;
+          document.getElementById("membershipId").value =
+            pendingRegistration.membershipId;
+          document.getElementById("paymentLink").value =
+            pendingRegistration.paymentLink;
 
-          displayRegistrations();
-          updateStats();
-          showNotification("Registration added successfully! 🎉", "success");
-        });
+          createRegistration(pendingRegistration.isPreregistered);
+          closeWarningModal();
+          showNotification(
+            "⚠️ Registration added with INVALID membership ID!",
+            "warning"
+          );
+        }
+      }
+
+      function showSuccessModal(email) {
+        document.getElementById("foundEmailDisplay").textContent = email;
+        document.getElementById("successModal").style.display = "block";
+      }
+
+      function closeSuccessModal() {
+        document.getElementById("successModal").style.display = "none";
+
+        // If there's pending registration data, process it
+        if (pendingRegistration && pendingRegistration.isPreregistered) {
+          // Temporarily fill form with pending data (for createRegistration function)
+          document.getElementById("name").value = pendingRegistration.name;
+          document.getElementById("email").value = pendingRegistration.email;
+          document.getElementById("phone").value = pendingRegistration.phone;
+          document.getElementById("isteMembership").value =
+            pendingRegistration.isteMembership;
+          document.getElementById("membershipId").value =
+            pendingRegistration.membershipId;
+          document.getElementById("paymentLink").value =
+            pendingRegistration.paymentLink;
+
+          createRegistration(true);
+          pendingRegistration = null;
+        }
+      }
 
       function saveData() {
         localStorage.setItem(
@@ -787,95 +1278,91 @@
 
         if (registrations.length === 0) {
           container.innerHTML = `
-            <div class="empty-state">
-                <h3>No registrations added yet</h3>
-                <p>Add registrations using the form above as you receive Formspree emails</p>
-            </div>
-        `;
+      <div class="empty-state">
+          <h3>No registrations added yet</h3>
+          <p>Add registrations using the form above as you receive Formspree emails</p>
+      </div>
+  `;
           return;
         }
 
         container.innerHTML = registrations
           .map(
             (reg) => `
-        <div class="registration-item">
-            <div class="participant-info">
-                <h3>${reg.name}</h3>
-                <p>📧 ${reg.email}</p>
-                <p>📱 ${reg.phone}</p>
-                <p>👤 ${
-                  reg.isteMembership === "yes" ? "ISTE Member" : "Non-member"
-                }</p>
-                ${
-                  reg.membershipId !== "N/A"
-                    ? `<p>🆔 ${reg.membershipId}</p>`
-                    : ""
-                }
-                <p>📅 Added: ${new Date(reg.addedDate).toLocaleDateString()}</p>
-            </div>
-            
-            <div class="payment-status">
-                <div class="status-badge status-${reg.status}">
-                    ${reg.status.charAt(0).toUpperCase() + reg.status.slice(1)}
-                </div>
-                
-                ${
-                  reg.paymentLink !== "N/A"
-                    ? `
-                    <br><br>
-                    <a href="${reg.paymentLink}" target="_blank" class="payment-link">
-                        📄 View Payment
-                    </a>
-                `
-                    : ""
-                }
-                
-                ${
-                  reg.ticketSent
-                    ? '<br><small style="color: #28a745;">✅ Ticket Sent</small>'
-                    : ""
-                }
-            </div>
-            
-            <div class="actions">
-                ${
-                  reg.status === "pending"
-                    ? `
-                    <button class="btn btn-success btn-small" onclick="verifyPayment(${reg.id})">
-                        ✅ Verify Payment
-                    </button>
-                `
-                    : ""
-                }
-                
-                ${
-                  reg.status === "verified" && !reg.ticketSent
-                    ? `
-                    <button class="btn btn-primary btn-small" onclick="sendTicket(${reg.id})">
-                        🎫 Send Ticket
-                    </button>
-                `
-                    : ""
-                }
-                
-                ${
-                  reg.ticketSent
-                    ? `
-                    <button class="btn btn-info btn-small" onclick="resendTicket(${reg.id})">
-                        🔄 Resend
-                    </button>
-                `
-                    : ""
-                }
-                
-                <button class="btn btn-danger btn-small" onclick="deleteRegistration(${
-                  reg.id
-                })">
-                    🗑️ Delete
-                </button>
-            </div>
-        </div>
-    `
+  <div class="registration-item">
+      <div class="participant-info">
+          <h3>${reg.name}</h3>
+          <p>📧 ${reg.email}</p>
+          <p>📱 ${reg.phone}</p>
+          <p>👤 ${
+            reg.isteMembership === "yes" ? "ISTE Member" : "Non-member"
+          }</p>
+          ${reg.membershipId !== "N/A" ? `<p>🆔 ${reg.membershipId}</p>` : ""}
+          <p>📅 Added: ${new Date(reg.addedDate).toLocaleDateString()}</p>
+      </div>
+      
+      <div class="payment-status">
+          <div class="status-badge status-${reg.status}">
+              ${reg.status.charAt(0).toUpperCase() + reg.status.slice(1)}
+          </div>
+          
+          ${
+            reg.paymentLink !== "N/A"
+              ? `
+              <br><br>
+              <a href="${reg.paymentLink}" target="_blank" class="payment-link">
+                  📄 View Payment
+              </a>
+          `
+              : ""
+          }
+          
+          ${
+            reg.ticketSent
+              ? '<br><small style="color: #28a745;">✅ Ticket Sent</small>'
+              : ""
+          }
+      </div>
+      
+      <div class="actions">
+          ${
+            reg.status === "pending"
+              ? `
+              <button class="btn btn-success btn-small" onclick="verifyPayment(${reg.id})">
+                  ✅ Verify Payment
+              </button>
+          `
+              : ""
+          }
+          
+          ${
+            reg.status === "verified" && !reg.ticketSent
+              ? `
+              <button class="btn btn-primary btn-small" onclick="sendTicket(${reg.id})">
+                  🎫 Send Ticket
+              </button>
+          `
+              : ""
+          }
+          
+          ${
+            reg.ticketSent
+              ? `
+              <button class="btn btn-info btn-small" onclick="resendTicket(${reg.id})">
+                  🔄 Resend
+              </button>
+          `
+              : ""
+          }
+          
+          <button class="btn btn-danger btn-small" onclick="deleteRegistration(${
+            reg.id
+          })">
+              🗑️ Delete
+          </button>
+      </div>
+  </div>
+`
           )
           .join("");
 
@@ -1104,11 +1591,11 @@ Membership Status: ${
 Please Join the whatsapp group for further updates: https://chat.whatsapp.com/DPu0FXSwa0XLCeVQxVrps0?mode=ems_copy_t
 
 📝 IMPORTANT NOTES:
-• Please bring a valid ID for verification
-• Arrive 15 minutes before the session starts
-• Bring a notebook and pen for taking notes
-• This ticket is non-transferable
-• Save the ticket image to your phone for easy access
+- Please bring a valid ID for verification
+- Arrive 15 minutes before the session starts
+- Bring a notebook and pen for taking notes
+- This ticket is non-transferable
+- Save the ticket image to your phone for easy access
 
 ❓ NEED HELP?
 If you have any questions, please reply to this email or contact us at skrhari2020@gmail.com.
@@ -1223,31 +1710,31 @@ TICKET IMAGE: Please find your personalized ticket below.`;
           ? "🔄 Resend Email Content"
           : "📧 Email Content & Ticket Ready";
         document.getElementById("modalInstructions").innerHTML = `
-        <p><strong>Your personalized ticket has been generated!</strong></p>
-        <p>Follow these steps to send the email:</p>
-        <ol>
-            <li>Right-click on the ticket image below and "Save image as..."</li>
-            <li>Copy the email content using the button below</li>
-            <li>Open your email service (Gmail, Outlook, etc.)</li>
-            <li>Paste the content and attach the saved ticket image</li>
-            <li>Send the email</li>
-        </ol>
-    `;
+  <p><strong>Your personalized ticket has been generated!</strong></p>
+  <p>Follow these steps to send the email:</p>
+  <ol>
+      <li>Right-click on the ticket image below and "Save image as..."</li>
+      <li>Copy the email content using the button below</li>
+      <li>Open your email service (Gmail, Outlook, etc.)</li>
+      <li>Paste the content and attach the saved ticket image</li>
+      <li>Send the email</li>
+  </ol>
+`;
 
         // Display the ticket image
         const emailContentDiv = document.getElementById("emailContent");
         emailContentDiv.innerHTML = `
-        <div style="margin-bottom: 20px;">
-            <h4 style="color: #667eea; margin-bottom: 10px;">🎫 Generated Ticket:</h4>
-            <img src="${emailData.ticketImageData}" alt="Event Ticket for ${reg.name}" 
-                 style="max-width: 100%; border: 2px solid #667eea; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-            <p style="font-size: 12px; color: #666; margin-top: 5px;">Right-click and save this image to attach to your email</p>
-        </div>
-        <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; border-left: 4px solid #667eea;">
-            <h4 style="color: #333; margin-bottom: 10px;">📝 Email Content:</h4>
-            <pre style="white-space: pre-wrap; font-family: inherit; font-size: 0.9rem;">${currentEmailContent}</pre>
-        </div>
-    `;
+  <div style="margin-bottom: 20px;">
+      <h4 style="color: #667eea; margin-bottom: 10px;">🎫 Generated Ticket:</h4>
+      <img src="${emailData.ticketImageData}" alt="Event Ticket for ${reg.name}" 
+           style="max-width: 100%; border: 2px solid #667eea; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+      <p style="font-size: 12px; color: #666; margin-top: 5px;">Right-click and save this image to attach to your email</p>
+  </div>
+  <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; border-left: 4px solid #667eea;">
+      <h4 style="color: #333; margin-bottom: 10px;">📝 Email Content:</h4>
+      <pre style="white-space: pre-wrap; font-family: inherit; font-size: 0.9rem;">${currentEmailContent}</pre>
+  </div>
+`;
 
         const actionBtn = document.getElementById("modalActionBtn");
         actionBtn.textContent = "📧 Open Gmail";
@@ -1332,7 +1819,6 @@ TICKET IMAGE: Please find your personalized ticket below.`;
         const notification = document.createElement("div");
         notification.className = `notification ${type}`;
         notification.textContent = message;
-
         document.body.appendChild(notification);
 
         setTimeout(() => {
@@ -1367,7 +1853,7 @@ TICKET IMAGE: Please find your personalized ticket below.`;
               email: "jane.smith@example.com",
               phone: "+91 9876543211",
               isteMembership: "yes",
-              membershipId: "ISTE123456",
+              membershipId: "000563",
               paymentLink: "N/A",
               status: "verified",
               ticketSent: false,
