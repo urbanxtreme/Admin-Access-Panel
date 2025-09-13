@@ -1072,30 +1072,30 @@
 
         const workflows = {
           mailto: `
-      <strong>Step 1:</strong> Add registration from Formspree email<br>
-      <strong>Step 2:</strong> Verify payment if needed<br>
-      <strong>Step 3:</strong> Click "Send Ticket" - downloads ticket image automatically<br>
-      <strong>Step 4:</strong> Email client opens with pre-filled content<br>
-      <strong>Step 5:</strong> Attach the downloaded ticket image and send<br><br>
-      <em>💡 Your default email client will open with everything ready!</em>
-  `,
+<strong>Step 1:</strong> Add registration from Formspree email<br>
+<strong>Step 2:</strong> Verify payment if needed<br>
+<strong>Step 3:</strong> Click "Send Ticket" - downloads ticket image automatically<br>
+<strong>Step 4:</strong> Email client opens with pre-filled content<br>
+<strong>Step 5:</strong> Attach the downloaded ticket image and send<br><br>
+<em>💡 Your default email client will open with everything ready!</em>
+`,
           copy: `
-      <strong>Step 1:</strong> Add registration from Formspree email<br>
-      <strong>Step 2:</strong> Verify payment if needed<br>
-      <strong>Step 3:</strong> Click "Send Ticket" - shows ticket image and email content<br>
-      <strong>Step 4:</strong> Right-click and save the ticket image<br>
-      <strong>Step 5:</strong> Copy email content and paste in Gmail/Outlook<br>
-      <strong>Step 6:</strong> Attach ticket image and send<br><br>
-      <em>💡 Works with any email service you prefer!</em>
-  `,
+<strong>Step 1:</strong> Add registration from Formspree email<br>
+<strong>Step 2:</strong> Verify payment if needed<br>
+<strong>Step 3:</strong> Click "Send Ticket" - shows ticket image and email content<br>
+<strong>Step 4:</strong> Right-click and save the ticket image<br>
+<strong>Step 5:</strong> Copy email content and paste in Gmail/Outlook<br>
+<strong>Step 6:</strong> Attach ticket image and send<br><br>
+<em>💡 Works with any email service you prefer!</em>
+`,
           webmail: `
-      <strong>Step 1:</strong> Add registration from Formspree email<br>
-      <strong>Step 2:</strong> Verify payment if needed<br>
-      <strong>Step 3:</strong> Click "Send Ticket" - downloads ticket and opens Gmail<br>
-      <strong>Step 4:</strong> Login if needed, attach downloaded ticket<br>
-      <strong>Step 5:</strong> Send the pre-filled email<br><br>
-      <em>💡 Opens directly in your web browser!</em>
-  `,
+<strong>Step 1:</strong> Add registration from Formspree email<br>
+<strong>Step 2:</strong> Verify payment if needed<br>
+<strong>Step 3:</strong> Click "Send Ticket" - downloads ticket and opens Gmail<br>
+<strong>Step 4:</strong> Login if needed, attach downloaded ticket<br>
+<strong>Step 5:</strong> Send the pre-filled email<br><br>
+<em>💡 Opens directly in your web browser!</em>
+`,
         };
 
         stepsElement.innerHTML =
@@ -1182,6 +1182,7 @@
               ? "verified"
               : "pending",
           ticketSent: false,
+          registered: false, // Add this field
           addedDate: new Date().toISOString(),
         };
 
@@ -1278,90 +1279,104 @@
 
         if (registrations.length === 0) {
           container.innerHTML = `
-      <div class="empty-state">
-          <h3>No registrations added yet</h3>
-          <p>Add registrations using the form above as you receive Formspree emails</p>
-      </div>
-  `;
+<div class="empty-state">
+    <h3>No registrations added yet</h3>
+    <p>Add registrations using the form above as you receive Formspree emails</p>
+</div>
+`;
           return;
         }
 
         container.innerHTML = registrations
           .map(
             (reg) => `
-  <div class="registration-item">
-      <div class="participant-info">
-          <h3>${reg.name}</h3>
-          <p>📧 ${reg.email}</p>
-          <p>📱 ${reg.phone}</p>
-          <p>👤 ${
-            reg.isteMembership === "yes" ? "ISTE Member" : "Non-member"
-          }</p>
-          ${reg.membershipId !== "N/A" ? `<p>🆔 ${reg.membershipId}</p>` : ""}
-          <p>📅 Added: ${new Date(reg.addedDate).toLocaleDateString()}</p>
-      </div>
-      
-      <div class="payment-status">
-          <div class="status-badge status-${reg.status}">
-              ${reg.status.charAt(0).toUpperCase() + reg.status.slice(1)}
-          </div>
-          
-          ${
-            reg.paymentLink !== "N/A"
-              ? `
-              <br><br>
-              <a href="${reg.paymentLink}" target="_blank" class="payment-link">
-                  📄 View Payment
-              </a>
-          `
-              : ""
-          }
-          
-          ${
-            reg.ticketSent
-              ? '<br><small style="color: #28a745;">✅ Ticket Sent</small>'
-              : ""
-          }
-      </div>
-      
-      <div class="actions">
-          ${
-            reg.status === "pending"
-              ? `
-              <button class="btn btn-success btn-small" onclick="verifyPayment(${reg.id})">
-                  ✅ Verify Payment
-              </button>
-          `
-              : ""
-          }
-          
-          ${
-            reg.status === "verified" && !reg.ticketSent
-              ? `
-              <button class="btn btn-primary btn-small" onclick="sendTicket(${reg.id})">
-                  🎫 Send Ticket
-              </button>
-          `
-              : ""
-          }
-          
-          ${
-            reg.ticketSent
-              ? `
-              <button class="btn btn-info btn-small" onclick="resendTicket(${reg.id})">
-                  🔄 Resend
-              </button>
-          `
-              : ""
-          }
-          
-          <button class="btn btn-danger btn-small" onclick="deleteRegistration(${
-            reg.id
-          })">
-              🗑️ Delete
-          </button>
-      </div>
-  </div>
+<div class="registration-item">
+    <div class="participant-info">
+        <h3>${reg.name}</h3>
+        <p>📧 ${reg.email}</p>
+        <p>📱 ${reg.phone}</p>
+        <p>👤 ${reg.isteMembership === "yes" ? "ISTE Member" : "Non-member"}</p>
+        ${reg.membershipId !== "N/A" ? `<p>🆔 ${reg.membershipId}</p>` : ""}
+        <p>📅 Added: ${new Date(reg.addedDate).toLocaleDateString()}</p>
+    </div>
+    
+    <div class="payment-status">
+        <div class="status-badge status-${reg.status}">
+            ${reg.status.charAt(0).toUpperCase() + reg.status.slice(1)}
+        </div>
+        
+        ${
+          reg.paymentLink !== "N/A"
+            ? `
+            <br><br>
+            <a href="${reg.paymentLink}" target="_blank" class="payment-link">
+                📄 View Payment
+            </a>
+        `
+            : ""
+        }
+        
+        ${
+          reg.ticketSent
+            ? '<br><small style="color: #28a745;">✅ Ticket Sent</small>'
+            : ""
+        }
+        
+        ${
+          reg.registered
+            ? '<br><small style="color: #059669; font-weight: bold;">🎓 Registered</small>'
+            : ""
+        }
+    </div>
+    
+    <div class="actions">
+        ${
+          reg.status === "pending"
+            ? `
+            <button class="btn btn-success btn-small" onclick="verifyPayment(${reg.id})">
+                ✅ Verify Payment
+            </button>
+        `
+            : ""
+        }
+        
+        ${
+          reg.status === "verified" && !reg.ticketSent
+            ? `
+            <button class="btn btn-primary btn-small" onclick="sendTicket(${reg.id})">
+                🎫 Send Ticket
+            </button>
+        `
+            : ""
+        }
+        
+        ${
+          reg.ticketSent && !reg.registered
+            ? `
+            <button class="btn btn-warning btn-small" onclick="markAsRegistered(${reg.id})">
+                📝 Register
+            </button>
+        `
+            : ""
+        }
+        
+        ${
+          reg.ticketSent
+            ? `
+            <button class="btn btn-info btn-small" onclick="resendTicket(${reg.id})">
+                🔄 Resend
+            </button>
+        `
+            : ""
+        }
+        
+        <button class="btn btn-danger btn-small" onclick="deleteRegistration(${
+          reg.id
+        })">
+            🗑️ Delete
+        </button>
+    </div>
+</div>
 `
           )
           .join("");
@@ -1380,11 +1395,30 @@
           (r) => r.status === "verified"
         ).length;
         const ticketsSent = registrations.filter((r) => r.ticketSent).length;
+        const registered = registrations.filter((r) => r.registered).length;
 
         document.getElementById("totalCount").textContent = total;
         document.getElementById("pendingCount").textContent = pending;
         document.getElementById("verifiedCount").textContent = verified;
         document.getElementById("ticketsSentCount").textContent = ticketsSent;
+
+        // Update registered count if the element exists
+        const registeredElement = document.getElementById("registeredCount");
+        if (registeredElement) {
+          registeredElement.textContent = registered;
+        }
+      }
+
+      function markAsRegistered(id) {
+        const reg = registrations.find((r) => r.id === id);
+        if (reg) {
+          reg.registered = true;
+          reg.registeredDate = new Date().toISOString();
+          saveData();
+          displayRegistrations();
+          updateStats();
+          showNotification(`${reg.name} marked as registered ✅`, "success");
+        }
       }
 
       function verifyPayment(id) {
@@ -1710,30 +1744,30 @@ TICKET IMAGE: Please find your personalized ticket below.`;
           ? "🔄 Resend Email Content"
           : "📧 Email Content & Ticket Ready";
         document.getElementById("modalInstructions").innerHTML = `
-  <p><strong>Your personalized ticket has been generated!</strong></p>
-  <p>Follow these steps to send the email:</p>
-  <ol>
-      <li>Right-click on the ticket image below and "Save image as..."</li>
-      <li>Copy the email content using the button below</li>
-      <li>Open your email service (Gmail, Outlook, etc.)</li>
-      <li>Paste the content and attach the saved ticket image</li>
-      <li>Send the email</li>
-  </ol>
+<p><strong>Your personalized ticket has been generated!</strong></p>
+<p>Follow these steps to send the email:</p>
+<ol>
+    <li>Right-click on the ticket image below and "Save image as..."</li>
+    <li>Copy the email content using the button below</li>
+    <li>Open your email service (Gmail, Outlook, etc.)</li>
+    <li>Paste the content and attach the saved ticket image</li>
+    <li>Send the email</li>
+</ol>
 `;
 
         // Display the ticket image
         const emailContentDiv = document.getElementById("emailContent");
         emailContentDiv.innerHTML = `
-  <div style="margin-bottom: 20px;">
-      <h4 style="color: #667eea; margin-bottom: 10px;">🎫 Generated Ticket:</h4>
-      <img src="${emailData.ticketImageData}" alt="Event Ticket for ${reg.name}" 
-           style="max-width: 100%; border: 2px solid #667eea; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-      <p style="font-size: 12px; color: #666; margin-top: 5px;">Right-click and save this image to attach to your email</p>
-  </div>
-  <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; border-left: 4px solid #667eea;">
-      <h4 style="color: #333; margin-bottom: 10px;">📝 Email Content:</h4>
+<div style="margin-bottom: 20px;">
+    <h4 style="color: #667eea; margin-bottom: 10px;">🎫 Generated Ticket:</h4>
+    <img src="${emailData.ticketImageData}" alt="Event Ticket for ${reg.name}" 
+         style="max-width: 100%; border: 2px solid #667eea; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+    <p style="font-size: 12px; color: #666; margin-top: 5px;">Right-click and save this image to attach to your email</p>
+</div>
+<div style="background: #f8f9fa; padding: 15px; border-radius: 5px; border-left: 4px solid #667eea;">
+    <h4 style="color: #333; margin-bottom: 10px;">📝 Email Content:</h4>
       <pre style="white-space: pre-wrap; font-family: inherit; font-size: 0.9rem;">${currentEmailContent}</pre>
-  </div>
+</div>
 `;
 
         const actionBtn = document.getElementById("modalActionBtn");
@@ -1845,6 +1879,7 @@ TICKET IMAGE: Please find your personalized ticket below.`;
               paymentLink: "https://drive.google.com/file/sample1",
               status: "pending",
               ticketSent: false,
+              registered: false,
               addedDate: new Date().toISOString(),
             },
             {
@@ -1857,6 +1892,7 @@ TICKET IMAGE: Please find your personalized ticket below.`;
               paymentLink: "N/A",
               status: "verified",
               ticketSent: false,
+              registered: false,
               addedDate: new Date().toISOString(),
             },
             {
@@ -1869,6 +1905,7 @@ TICKET IMAGE: Please find your personalized ticket below.`;
               paymentLink: "https://drive.google.com/file/sample2",
               status: "verified",
               ticketSent: true,
+              registered: false,
               ticketId: "ISTE-12345678",
               ticketSentDate: new Date().toISOString(),
               addedDate: new Date(Date.now() - 86400000).toISOString(), // Yesterday
