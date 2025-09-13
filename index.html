@@ -735,6 +735,10 @@
           <div class="stat-number" id="ticketsSentCount">0</div>
           <div class="stat-label">Tickets Sent</div>
         </div>
+        <div class="stat-card">
+          <div class="stat-number" id="registeredCount">0</div>
+          <div class="stat-label">Registered Students</div>
+        </div>
       </div>
 
       <!-- Search -->
@@ -1452,12 +1456,7 @@
         document.getElementById("pendingCount").textContent = pending;
         document.getElementById("verifiedCount").textContent = verified;
         document.getElementById("ticketsSentCount").textContent = ticketsSent;
-
-        // Update registered count if the element exists
-        const registeredElement = document.getElementById("registeredCount");
-        if (registeredElement) {
-          registeredElement.textContent = registered;
-        }
+        document.getElementById("registeredCount").textContent = registered;
       }
 
       function markAsRegistered(id) {
