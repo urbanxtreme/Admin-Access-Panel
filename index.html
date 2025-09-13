@@ -18,6 +18,39 @@
         color: #333;
       }
 
+      .search-container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+
+      .search-box {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .search-box input {
+        flex: 1;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+      }
+
+      .search-box input:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .search-results-info {
+        margin-top: 10px;
+        color: #666;
+        font-style: italic;
+      }
+
       .success-modal {
         display: none;
         position: fixed;
@@ -704,6 +737,23 @@
         </div>
       </div>
 
+      <!-- Search -->
+      <div class="search-container">
+        <h3>🔍 Search Registrations</h3>
+        <div class="search-box">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search by ID, name, email, phone, or membership ID..."
+            onkeyup="searchRegistrations()"
+          />
+          <button class="btn btn-info btn-small" onclick="clearSearch()">
+            Clear
+          </button>
+        </div>
+        <div id="searchResults" class="search-results-info"></div>
+      </div>
+
       <!-- Add New Registration -->
       <div class="add-registration">
         <h2>➕ Add New Registration</h2>
@@ -1034,6 +1084,7 @@
       document.addEventListener("DOMContentLoaded", function () {
         displayRegistrations();
         updateStats();
+        filteredRegistrations = registrations;
         updateCurrentMethod();
 
         // Modal event listeners
@@ -1937,6 +1988,160 @@ TICKET IMAGE: Please find your personalized ticket below.`;
           document.body.appendChild(addSampleBtn);
         }
       }, 2000);
+
+      let filteredRegistrations = registrations;
+
+      function searchRegistrations() {
+        const searchTerm = document
+          .getElementById("searchInput")
+          .value.toLowerCase()
+          .trim();
+        const resultsDiv = document.getElementById("searchResults");
+
+        if (!searchTerm) {
+          filteredRegistrations = registrations;
+          resultsDiv.textContent = "";
+          displayRegistrations();
+          return;
+        }
+
+        filteredRegistrations = registrations.filter((reg) => {
+          const ticketId =
+            reg.ticketId || `ISTE-${reg.id.toString().padStart(8, "0")}`;
+          return (
+            reg.id.toString().includes(searchTerm) ||
+            reg.name.toLowerCase().includes(searchTerm) ||
+            reg.email.toLowerCase().includes(searchTerm) ||
+            reg.phone.toLowerCase().includes(searchTerm) ||
+            reg.membershipId.toLowerCase().includes(searchTerm) ||
+            ticketId.toLowerCase().includes(searchTerm)
+          );
+        });
+
+        resultsDiv.textContent = `Found ${filteredRegistrations.length} result(s) for "${searchTerm}"`;
+        displayFilteredRegistrations();
+      }
+
+      function clearSearch() {
+        document.getElementById("searchInput").value = "";
+        document.getElementById("searchResults").textContent = "";
+        filteredRegistrations = registrations;
+        displayRegistrations();
+      }
+
+      function displayFilteredRegistrations() {
+        const container = document.getElementById("registrationsList");
+
+        if (filteredRegistrations.length === 0) {
+          container.innerHTML = `
+<div class="empty-state">
+    <h3>No matching registrations found</h3>
+    <p>Try adjusting your search terms</p>
+</div>
+`;
+          return;
+        }
+
+        // Use the same display logic but with filteredRegistrations
+        container.innerHTML = filteredRegistrations
+          .map((reg) => {
+            // Same template as in displayRegistrations() function
+            return `
+<div class="registration-item">
+    <div class="participant-info">
+        <h3>${reg.name}</h3>
+        <p>📧 ${reg.email}</p>
+        <p>📱 ${reg.phone}</p>
+        <p>👤 ${reg.isteMembership === "yes" ? "ISTE Member" : "Non-member"}</p>
+        ${reg.membershipId !== "N/A" ? `<p>🆔 ${reg.membershipId}</p>` : ""}
+        <p>📅 Added: ${new Date(reg.addedDate).toLocaleDateString()}</p>
+    </div>
+    
+    <div class="payment-status">
+        <div class="status-badge status-${reg.status}">
+            ${reg.status.charAt(0).toUpperCase() + reg.status.slice(1)}
+        </div>
+        
+        ${
+          reg.paymentLink !== "N/A"
+            ? `
+            <br><br>
+            <a href="${reg.paymentLink}" target="_blank" class="payment-link">
+                📄 View Payment
+            </a>
+        `
+            : ""
+        }
+        
+        ${
+          reg.ticketSent
+            ? '<br><small style="color: #28a745;">✅ Ticket Sent</small>'
+            : ""
+        }
+        
+        ${
+          reg.registered
+            ? '<br><small style="color: #059669; font-weight: bold;">🎓 Registered</small>'
+            : ""
+        }
+    </div>
+    
+    <div class="actions">
+        ${
+          reg.status === "pending"
+            ? `
+            <button class="btn btn-success btn-small" onclick="verifyPayment(${reg.id})">
+                ✅ Verify Payment
+            </button>
+        `
+            : ""
+        }
+        
+        ${
+          reg.status === "verified" && !reg.ticketSent
+            ? `
+            <button class="btn btn-primary btn-small" onclick="sendTicket(${reg.id})">
+                🎫 Send Ticket
+            </button>
+        `
+            : ""
+        }
+        
+        ${
+          reg.ticketSent && !reg.registered
+            ? `
+            <button class="btn btn-warning btn-small" onclick="markAsRegistered(${reg.id})">
+                📝 Register
+            </button>
+        `
+            : ""
+        }
+        
+        ${
+          reg.ticketSent
+            ? `
+            <button class="btn btn-info btn-small" onclick="resendTicket(${reg.id})">
+                🔄 Resend
+            </button>
+        `
+            : ""
+        }
+        
+        <button class="btn btn-danger btn-small" onclick="deleteRegistration(${
+          reg.id
+        })">
+            🗑️ Delete
+        </button>
+    </div>
+</div>
+`;
+          })
+          .join("");
+
+        document.getElementById(
+          "listCount"
+        ).textContent = `${filteredRegistrations.length} of ${registrations.length} registrations`;
+      }
     </script>
   </body>
 </html>
